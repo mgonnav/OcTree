@@ -44,8 +44,6 @@ class Octree {
   bool painted() const;
   bool isLeaf() const;
   std::vector<std::shared_ptr<Point3D<T> > > getPoints() const;
-  // std::vector<std::shared_ptr<Point3D<T> > >
-  // getAllPoints(std::vector<std::shared_ptr<Point3D<T> > >& found=NULL) const;
   uint getPointCount() const;
   uint getLeafCount() const;
 };
@@ -224,21 +222,6 @@ bool Octree<T>::remove(const RectangularCuboid<T>& range) {
 
   return 0;
 }
-/*
-template <typename T>
-std::vector<std::shared_ptr<Point3D<T> > >
-Octree<T>::getAllPoints(std::vector<std::shared_ptr<Point3D<T> > >& found) const
-{ auto pf = found ? found : std::vector<std::shared_ptr<Point3D<T> >
->(total_points); if (isLeaf()) return points;
-
-  for (const auto& octant : octants) {
-    auto child_points = octant->getAllPoints();
-    found.insert(points.end(), child_points.begin(), child_points.end());
-  }
-
-  return points;
-}
-*/
 
 template <typename T>
 std::vector<std::shared_ptr<Point3D<T> > > Octree<T>::getPoints() const {
