@@ -16,7 +16,9 @@ class Octree {
             OcNode* initial = nullptr) const;
 
  public:
-  explicit Octree(const Cube<T>& boundary) { this->root = new OcNode{boundary}; }
+  explicit Octree(const Cube<T>& boundary) {
+    this->root = new OcNode{boundary};
+  }
   bool insert(const Point3D<T>& point);
   bool find(const Point3D<T>& point) const;
   bool remove(const Point3D<T>& point);
@@ -109,7 +111,10 @@ template <typename T>
 bool Octree<T>::OcNode::hasPoint(const Point3D<T>& point) const {
   bool point_found = false;
   for (const auto& p : *points)
-    if (*p == point) {point_found = true; break;}
+    if (*p == point) {
+      point_found = true;
+      break;
+    }
   return point_found;
 }
 
@@ -165,8 +170,7 @@ bool Octree<T>::remove(const Point3D<T>& point) {
     auto points = *current->points;
     current->points->clear();
     for (auto it = points.begin(); it != points.end(); ++it)
-      if (**it == point)
-      {
+      if (**it == point) {
         points.erase(it);
         break;
       }

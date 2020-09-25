@@ -18,4 +18,3 @@ bool Cube<T>::contains(const Point3D<T>& point) const {
           point.y >= center.y - half_side && point.y <= center.y + half_side &&
           point.z >= center.z - half_side && point.z <= center.z + half_side);
 }
-

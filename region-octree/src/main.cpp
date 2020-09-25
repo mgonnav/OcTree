@@ -31,8 +31,7 @@ int main() {
 
   std::cout << "Found " << point_count << " points in total.\n";
 
-  for (int i = 0; i < 24; ++i)
-    octree.remove(points[i]);
+  for (int i = 0; i < 24; ++i) octree.remove(points[i]);
 
   point_count = 0;
   for (const auto& point : points)
@@ -40,7 +39,8 @@ int main() {
       ++point_count;
     }
 
-  std::cout << "After removing 24 points, found " << point_count << " points in total.\n";
+  std::cout << "After removing 24 points, found " << point_count
+            << " points in total.\n";
 
   return 0;
 }

@@ -19,7 +19,6 @@ struct Point3D {
 };
 
 template <typename T>
-bool operator==(const Point3D<T>& p1, const Point3D<T>& p2)
-{
+bool operator==(const Point3D<T>& p1, const Point3D<T>& p2) {
   return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
 }

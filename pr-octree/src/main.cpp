@@ -29,7 +29,7 @@ int main() {
 
   std::cout << "There are " << octree.getPointCount() << " points in total\n";
 
-  std::cout << "There are " << octree.getLeafCount() << " leafs.\n" << std::flush;
+  std::cout << "There are " << octree.getLeafCount() << " leafs.\n";
 
   for (int i = 0; i < 10000; ++i) octree.remove(points[i]);
 

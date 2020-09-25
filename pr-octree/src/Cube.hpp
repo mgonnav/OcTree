@@ -42,4 +42,3 @@ bool Cube<T>::intersects(const RectangularCuboid<T>& other) const {
            this->center.z - this->half_side > other.center.z + other.depth ||
            this->center.z + this->half_side < other.center.z - other.depth);
 }
-
