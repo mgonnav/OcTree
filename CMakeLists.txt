@@ -8,10 +8,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-file(GLOB SRCFILES
-    "src/*.cpp"
-    "src/*.hpp"
+file(GLOB PRSRCFILES
+    "pr-octree/src/*.cpp"
+    "pr-octree/src/*.hpp"
 )
 
-add_executable(octree ${SRCFILES})
+file(GLOB REGIONSRCFILES
+    "region-octree/src/*.cpp"
+    "region-octree/src/*.hpp"
+)
+
+add_executable(pr_octree ${PRSRCFILES})
+add_executable(region_octree ${REGIONSRCFILES})
 
