@@ -16,9 +16,9 @@ class Octree {
             OcNode* initial = nullptr) const;
 
  public:
-  Octree(const Cube<T>& boundary) { this->root = new OcNode(boundary); }
+  explicit Octree(const Cube<T>& boundary) { this->root = new OcNode{boundary}; }
   bool insert(const Point3D<T>& point);
-  bool find(const Point3D<T>& point);
+  bool find(const Point3D<T>& point) const;
   bool remove(const Point3D<T>& point);
 };
 
@@ -28,8 +28,8 @@ struct Octree<T>::OcNode {
   OcNode* children[8];
   std::vector<Point3D<T>*>* points;
 
-  OcNode(const Cube<T>& boundary) {
-    this->boundary = new Cube<T>(boundary);
+  explicit OcNode(const Cube<T>& boundary) {
+    this->boundary = new Cube<T>{boundary};
     for (int i = 0; i < 8; ++i) this->children[i] = nullptr;
     this->points = new std::vector<Point3D<T>*>();
   };
@@ -45,7 +45,7 @@ struct Octree<T>::OcNode {
 };
 
 template <typename T>
-bool Octree<T>::find(const Point3D<T>& point) {
+bool Octree<T>::find(const Point3D<T>& point) const {
   std::stack<OcNode*> node_path;
   return find(point, &node_path);
 }
@@ -63,7 +63,7 @@ bool Octree<T>::insert(const Point3D<T>& point) {
 
     OcNode* leaf_node = node_path.top();
     node_path.pop();
-    leaf_node->points->push_back(new Point3D<T>(point));
+    leaf_node->points->push_back(new Point3D<T>{point});
 
     bool should_adjust = true;
     while (!node_path.empty() && should_adjust) {
@@ -109,12 +109,18 @@ template <typename T>
 bool Octree<T>::OcNode::hasPoint(const Point3D<T>& point) const {
   bool point_found = false;
   for (const auto& p : *points)
-    if (*p == point) point_found = true;
+    if (*p == point) {point_found = true; break;}
   return point_found;
 }
+
 template <typename T>
 bool Octree<T>::OcNode::isPainted() const {
   return isLeaf() && (points->size() > 0);
+}
+
+template <typename T>
+bool Octree<T>::OcNode::isLeaf() const {
+  return children[0] == nullptr;
 }
 
 template <typename T>
@@ -150,17 +156,11 @@ void Octree<T>::OcNode::subdivide() {
 }
 
 template <typename T>
-bool Octree<T>::OcNode::isLeaf() const {
-  return children[0] == nullptr;
-}
-
-template <typename T>
 bool Octree<T>::remove(const Point3D<T>& point) {
   std::stack<OcNode*> node_path;
 
   if (find(point, &node_path)) {
     auto current = node_path.top();
-    node_path.pop();
 
     auto points = *current->points;
     current->points->clear();
@@ -171,7 +171,10 @@ bool Octree<T>::remove(const Point3D<T>& point) {
         break;
       }
 
-    for (const auto& point : points) insert(*point);
+    for (const auto& point : points) {
+      insert(*point);
+      delete point;
+    }
   }
 
   return 0;

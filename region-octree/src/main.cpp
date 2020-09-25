@@ -16,8 +16,8 @@ int main() {
     points.push_back(tmp);
   }
 
-  Point3D<double> p{0, 0, 0};
-  Cube<float> c{p, 12};
+  Point3D<double> p{3.5, 3.5, 3.5};
+  Cube<float> c{p, 8.5};
   Octree<float> octree(c);
 
   for (const auto& point : points) octree.insert(point);
@@ -40,7 +40,7 @@ int main() {
       ++point_count;
     }
 
-  std::cout << "After removing, found " << point_count << " points in total.\n";
+  std::cout << "After removing 24 points, found " << point_count << " points in total.\n";
 
   return 0;
 }
