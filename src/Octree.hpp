@@ -1,12 +1,14 @@
 #pragma once
+#include <Qt3DCore>
 #include <algorithm>
 #include <stack>
 #include <vector>
 
 #include "Cube.hpp"
 #include "Point3D.hpp"
+#include "scenemodifier.hpp"
 
-#define MAX_DEPTH 32
+#define MAX_DEPTH 7
 
 template <typename T>
 class Octree {
@@ -22,6 +24,7 @@ class Octree {
   bool insert(const Point3D<T>& point);
   bool find(const Point3D<T>& point) const;
   bool remove(const Point3D<T>& point);
+  void draw(Qt3DCore::QEntity* root_entity, OcNode* current = nullptr);
 };
 
 template <typename T>
@@ -182,4 +185,17 @@ bool Octree<T>::remove(const Point3D<T>& point) {
   }
 
   return 0;
+}
+
+template <typename T>
+void Octree<T>::draw(Qt3DCore::QEntity* root_entity, OcNode* current) {
+  if (current == nullptr) current = root;
+
+  if (!current->isLeaf()) {
+    for (const auto& child : current->children) draw(root_entity, child);
+  } else if (current->isPainted()) {
+    SceneModifier* obj =
+        new SceneModifier(root_entity, current->boundary->center,
+                          current->boundary->half_side * 2);
+  }
 }
